@@ -275,28 +275,37 @@ let ultimaActualizacion;
 let confetti;
 
 
-document.getElementById('cerrarModalError').addEventListener('click', function() {
-    document.getElementById('modalError').style.display = 'none';
-});
-
 document.addEventListener('DOMContentLoaded', (event) => {
-    confetti = new Confetti('finalizar');
-    confetti.setCount(150);
-    confetti.setSize(1.5);
-    confetti.setPower(40);
-    confetti.setFade(true);
-    confetti.destroyTarget(false);
-});
+            confetti = new Confetti('finalizar');
+            confetti.setCount(150);
+            confetti.setSize(1.5);
+            confetti.setPower(40);
+            confetti.setFade(true);
+            confetti.destroyTarget(false);
 
-document.getElementById('actualizar').addEventListener('click', actualizarDatos);
-document.getElementById('inicio').addEventListener('click', iniciar);
-document.getElementById('pausa').addEventListener('click', pausarContinuar);
-document.getElementById('finalizar').addEventListener('click', function() {
-    finalizarReunion();
-    confetti.fire();
-});
-document.getElementById('cerrarModal').addEventListener('click', cerrarModal);
-document.getElementById('compartirResumen').addEventListener('click', compartirResumen);
+            // Move event listeners inside DOMContentLoaded
+            document.getElementById('actualizar').addEventListener('click', actualizarDatos);
+            document.getElementById('inicio').addEventListener('click', iniciar);
+            document.getElementById('pausa').addEventListener('click', pausarContinuar);
+            document.getElementById('finalizar').addEventListener('click', function() {
+                finalizarReunion();
+                confetti.fire();
+            });
+            document.getElementById('aceptarResumen').addEventListener('click', cerrarModal);
+            document.getElementById('compartirResumen').addEventListener('click', compartirResumen);
+            document.getElementById('aceptarError').addEventListener('click', function() {
+                document.getElementById('modalError').style.display = 'none';
+            });
+
+            // Simulation modal event listeners
+            document.getElementById('simular-reunion').addEventListener('click', function() {
+                document.getElementById('modalSimulacion').style.display = "block";
+            });
+            document.getElementById('cerrarSimulacion').addEventListener('click', function() {
+                document.getElementById('modalSimulacion').style.display = "none";
+            });
+            document.getElementById('calcularSimulacion').addEventListener('click', calcularSimulacion);
+        });
 
 function actualizarDatos() {
     participantes = parseInt(document.getElementById('participantes').value);
@@ -361,10 +370,10 @@ function finalizarReunion() {
     document.getElementById('modalResumen').style.display = 'block';
 }
 
-function cerrarModal() {
-    document.getElementById('modalResumen').style.display = 'none';
-    reiniciar();
-}
+   function cerrarModal() {
+            document.getElementById('modalResumen').style.display = 'none';
+            reiniciar();
+        }
 
 function compartirResumen() {
     const resumen = `
@@ -539,22 +548,39 @@ btnCerrarSimulacion.onclick = function() {
 }
 
 // Calculate the simulation when the user clicks on calculate button
-btnCalcularSimulacion.onclick = function() {
-  const duracion = document.getElementById('duracionSimulacion').value;
-  const participantes = document.getElementById('participantesSimulacion').value;
-  const salarioPromedio = document.getElementById('salarioPromedioSimulacion').value;
-  const tipoCambio = document.getElementById('tipoCambioSimulacion').value;
 
-  if (duracion && participantes && salarioPromedio && tipoCambio) {
-    const costoTotalUSD = (duracion * 60) * (salarioPromedio / (20 * 8 * 3600)) * participantes;
-    const costoTotalARS = costoTotalUSD * tipoCambio;
+function calcularSimulacion() {
+            const duracion = document.getElementById('duracionSimulacion').value;
+            const participantes = document.getElementById('participantesSimulacion').value;
+            const salarioPromedio = document.getElementById('salarioPromedioSimulacion').value;
+            const tipoCambio = document.getElementById('tipoCambioSimulacion').value;
 
-    document.getElementById('costoEstimadoUSD').textContent = costoTotalUSD.toFixed(2);
-    document.getElementById('costoEstimadoARS').textContent = costoTotalARS.toFixed(2);
-  } else {
-    alert('Por favor, complete todos los campos.');
-  }
-}
+            if (duracion && participantes && salarioPromedio && tipoCambio) {
+                const costoTotalUSD = (duracion * 60) * (salarioPromedio / (20 * 8 * 3600)) * participantes;
+                const costoTotalARS = costoTotalUSD * tipoCambio;
+
+                document.getElementById('costoEstimadoUSD').textContent = costoTotalUSD.toFixed(2);
+                document.getElementById('costoEstimadoARS').textContent = costoTotalARS.toFixed(2);
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+// btnCalcularSimulacion.onclick = function() {
+//   const duracion = document.getElementById('duracionSimulacion').value;
+//   const participantes = document.getElementById('participantesSimulacion').value;
+//   const salarioPromedio = document.getElementById('salarioPromedioSimulacion').value;
+//   const tipoCambio = document.getElementById('tipoCambioSimulacion').value;
+
+//   if (duracion && participantes && salarioPromedio && tipoCambio) {
+//     const costoTotalUSD = (duracion * 60) * (salarioPromedio / (20 * 8 * 3600)) * participantes;
+//     const costoTotalARS = costoTotalUSD * tipoCambio;
+
+//     document.getElementById('costoEstimadoUSD').textContent = costoTotalUSD.toFixed(2);
+//     document.getElementById('costoEstimadoARS').textContent = costoTotalARS.toFixed(2);
+//   } else {
+//     alert('Por favor, complete todos los campos.');
+//   }
+// }
     </script>
 </body>
 </html>
